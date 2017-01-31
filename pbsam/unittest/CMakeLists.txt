@@ -1,5 +1,4 @@
 # Set gtest properties
-ExternalProject_Get_Property(gtest source_dir binary_dir)
 include_directories("${source_dir}/include")
 
 file(GLOB SRCS *.cpp)
@@ -30,11 +29,14 @@ ADD_EXECUTABLE(pbsamtest
   main.cpp
   )
 
-add_test(NAME pbamtest
-         COMMAND pbamtest)
-
 TARGET_LINK_LIBRARIES(pbsamtest
-                      libgtest
-                      ${PBSAM_LINKER_LIBS})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-install(TARGETS pbsamtest RUNTIME DESTINATION ${CMAKE_BINARY_DIR}/bin)
+    Threads::Threads
+    ${GTEST_BOTH_LIBRARIES}
+    ${PBSAM_LINKER_LIBS}
+)
+
+add_test(NAME pbsamtest
+         COMMAND pbsamtest)
+#
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+# install(TARGETS pbsamtest RUNTIME DESTINATION ${CMAKE_BINARY_DIR}/bin)

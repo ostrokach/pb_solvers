@@ -12,9 +12,9 @@ add_executable(pbsam
                ../../pb_shared/src/BesselCalc.cpp
                ../../pb_shared/src/Constants.cpp
                ElectrostaticsSAM.cpp
-               Gradsolvmat.cpp  
+               Gradsolvmat.cpp
                main.cpp
-               PBSAM.cpp 
+               PBSAM.cpp
                PhysCalcSAM.cpp
                ../../pb_shared/src/ReExpCalc.cpp
                ../../pb_shared/src/setup.cpp
@@ -36,17 +36,23 @@ endif()
 option(ENABLE_PBSAM_APBS "pbsam APBS" OFF)
 if(ENABLE_PBSAM_APBS)
   add_definitions(-DPBSAM_APBS)
-  include_directories(
-                      ../../../../src/ 
-                      ../../../../tools/windows/configuration\ headers/
-                      ../../../../externals/fetk/maloc/src/base
-                      ../../../../externals/fetk/maloc/src/vsys
-                      ../../../../externals/fetk/maloc/src/vsh
-                      ../../../../externals/fetk/maloc/src/psh
-                      )
+  # include_directories(
+  #   "${CMAKE_INCLUDE_PATH}/apbs"
+  #   "${CMAKE_INCLUDE_PATH}/apbs/fem"
+  #   "${CMAKE_INCLUDE_PATH}/apbs/mg"
+  #   "${CMAKE_INCLUDE_PATH}/apbs/pmgc"
+  # )
+  # include_directories(
+  #                     ../../../../src/
+  #                     ../../../../tools/windows/configuration\ headers/
+  #                     ../../../../externals/fetk/maloc/src/base
+  #                     ../../../../externals/fetk/maloc/src/vsys
+  #                     ../../../../externals/fetk/maloc/src/vsh
+  #                     ../../../../externals/fetk/maloc/src/psh
+  #                     )
 
   #  build pbsam library
-  add_library(PBSAMLib 
+  add_library(PBSAMLib
               ../../pb_shared/src/BaseBD.cpp
               ../../pb_shared/src/BaseElectro.cpp
               ../../pb_shared/src/BaseSys.cpp
@@ -54,8 +60,8 @@ if(ENABLE_PBSAM_APBS)
               ../../pb_shared/src/BesselCalc.cpp
               ../../pb_shared/src/Constants.cpp
               ElectrostaticsSAM.cpp
-              Gradsolvmat.cpp  
-              PBSAM.cpp 
+              Gradsolvmat.cpp
+              PBSAM.cpp
               PhysCalcSAM.cpp
               ../../pb_wrap/src/PBSAMWrap.cpp
               ../../pb_shared/src/ReExpCalc.cpp
@@ -79,5 +85,7 @@ endif()
 
 ################################################
 TARGET_LINK_LIBRARIES( pbsam ${PBSAM_LINKER_LIBS})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-install(TARGETS pbsam RUNTIME DESTINATION ${CMAKE_BINARY_DIR}/bin)
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+install(TARGETS pbsam PBSAMLib
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib)

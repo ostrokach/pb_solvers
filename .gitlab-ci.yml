@@ -1,0 +1,8 @@
+image: condaforge/linux-anvil:latest
+
+build:
+  stage: build
+  script:
+    - echo '  - kimlab' >> ~/.condarc
+    - cd devtools/conda-recipe
+    - conda build .

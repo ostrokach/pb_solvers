@@ -72,7 +72,7 @@ if(ENABLE_PBAM_SPHINX)
   find_package(PythonInterp 3.4 REQUIRED)
   find_package(PythonInclude REQUIRED)
   find_package(Cython REQUIRED)
- 
+
   include_directories("${PYTHON_INCLUDE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
   add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/pbam_py.c"
                      COMMAND "${PYTHON_EXECUTABLE}" -m cython
@@ -86,11 +86,20 @@ endif()
 ###### Not sure about this…
 ################################################
 enable_testing()
+find_package(Threads REQUIRED)
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
 
 
 ################################################
 ###### Sub directories for all of source
 ################################################
+include_directories(
+  "${CMAKE_INCLUDE_PATH}/apbs"
+  "${CMAKE_INCLUDE_PATH}/apbs/fem"
+  "${CMAKE_INCLUDE_PATH}/apbs/mg"
+  "${CMAKE_INCLUDE_PATH}/apbs/pmgc"
+)
 add_subdirectory(pb_shared/src)
 add_subdirectory(pb_shared/unittest)
 

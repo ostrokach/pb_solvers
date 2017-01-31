@@ -1,0 +1,38 @@
+{% set version = "1.5" %}
+
+package:
+  name: pb_solvers
+  version: {{ version }}
+
+source:
+  path: ../../
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - cmake
+    - apbs-headers
+    - fetk
+    - eigen
+    - boost
+    - openblas
+    - gtest
+  run:
+    - fetk
+    - eigen
+    - boost
+    - openblas
+    # Binaries
+    - msms
+    - nanoshaper
+
+# test:
+#   commands:
+#     - maloc --help
+
+about:
+  home: https://github.com/davas301/pb_solvers
+  summary: Analytic and Semi-Analytic solvers for Poisson-Boltzmann equations.
+  license: Unknown

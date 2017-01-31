@@ -32,17 +32,23 @@ endif()
 option(ENABLE_PBAM_APBS "pbam APBS" OFF)
 if(ENABLE_PBAM_APBS)
   add_definitions(-DPBAM_APBS)
-  include_directories(
-                      ../../../../src/ 
-                      ../../../../tools/windows/configuration\ headers/
-                      ../../../../externals/fetk/maloc/src/base
-                      ../../../../externals/fetk/maloc/src/vsys
-                      ../../../../externals/fetk/maloc/src/vsh
-                      ../../../../externals/fetk/maloc/src/psh
-                      )
+  # include_directories(
+  #   "${CMAKE_INCLUDE_PATH}/apbs"
+  #   "${CMAKE_INCLUDE_PATH}/apbs/fem"
+  #   "${CMAKE_INCLUDE_PATH}/apbs/mg"
+  #   "${CMAKE_INCLUDE_PATH}/apbs/pmgc"
+  # )
+  # include_directories(
+  #                     ../../../../src/
+  #                     ../../../../tools/windows/configuration\ headers/
+  #                     ../../../../externals/fetk/maloc/src/base
+  #                     ../../../../externals/fetk/maloc/src/vsys
+  #                     ../../../../externals/fetk/maloc/src/vsh
+  #                     ../../../../externals/fetk/maloc/src/psh
+  #                     )
 
   #  build pbam library
-  add_library(PBAMLib 
+  add_library(PBAMLib
               ASolver.cpp
               ../../pb_shared/src/BaseBD.cpp
               ../../pb_shared/src/BaseElectro.cpp
@@ -62,6 +68,7 @@ if(ENABLE_PBAM_APBS)
   if(WIN32)
     target_sources(PBAMLib PUBLIC ../../pb_shared/src/drand48.cpp)
   endif()
+
 endif()
 
 ################################################
@@ -69,7 +76,7 @@ endif()
 ################################################
 if(ENABLE_PBAM_SPHINX)
   include_directories("${PYTHON_INCLUDE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-  
+
   add_library(pbam_sph MODULE
               ../../pb_wrap/src/pbam_py.c
               ASolver.cpp
@@ -87,7 +94,7 @@ if(ENABLE_PBAM_SPHINX)
               ../../pb_shared/src/setup.cpp
               ../../pb_shared/src/SHCalc.cpp
               SystemAM.cpp)
-  
+
   set_target_properties(pbam_sph PROPERTIES PREFIX "")
 endif()
 
@@ -95,5 +102,7 @@ endif()
 ###### Install
 ################################################
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-install(TARGETS pbam RUNTIME DESTINATION ${CMAKE_BINARY_DIR}/bin)
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+install(TARGETS pbam PBAMLib
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib)
